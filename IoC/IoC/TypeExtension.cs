@@ -18,7 +18,7 @@ namespace IoC
             return type.GetImportedProperties().Any();
         }
 
-        public static bool HasImportedAtributes(this ImportConstructorAttribute constructor)
+        public static bool HasAtributes(this ImportConstructorAttribute constructor)
         {
             if (constructor == null)
             {

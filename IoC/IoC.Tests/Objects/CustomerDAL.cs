@@ -1,4 +1,5 @@
 ﻿using IoC.Attributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,22 +9,28 @@ namespace IoC.Tests.Objects
     {
     }
 
-    [Export(typeof(ICustomerDAL))]
-    public class CustomerDAL : ICustomerDAL
+    
+    [Export(new Type[] { typeof(ICustomerDAL), typeof(IEnumerable) })]
+    public class CustomerDAL : ICustomerDAL,IEnumerable
     {
         public CustomerDAL() { }
+
+        public IEnumerator GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 
-
-    [Export(typeof(IEnumerable))]
+    [Export(typeof(IEnumerator))]
     public class CustomerDAL2 : ICustomerDAL
     {
         public CustomerDAL2() { }
+
+      
     }
-    [Export(typeof(IEnumerable),typeof(ICustomerDAL))]
-     public class CustomerDAL3 : ICustomerDAL
-    {
-        public CustomerDAL3() { }
-    }
+
+
+
+
 
 }

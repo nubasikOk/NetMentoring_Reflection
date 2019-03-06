@@ -15,12 +15,15 @@ namespace IoC.Attributes
         public ExportAttribute()
         { }
 
-        public ExportAttribute(params Type [] contract)
+        public ExportAttribute(Type contract)
+        {
+            Contract = new Type[] { contract };
+        }
+        public ExportAttribute(Type[] contract)
         {
             Contract = contract;
         }
 
-       
 
     }
 }

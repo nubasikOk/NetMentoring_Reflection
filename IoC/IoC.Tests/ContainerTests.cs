@@ -85,11 +85,11 @@ namespace IoC.Tests
             Assert.IsNotNull(customerBll.Logger.GetType() == typeof(Logger));
         }
 
-           [TestMethod()]
+        [TestMethod()]
         public void NoMappingExceptionWithNoMappedType()
         {
             _container.ReadAssembly(Assembly.GetExecutingAssembly());
-            Assert.ThrowsException<Exception>(()=> _container.CreateInstance<CustomerDAL2>());
+            Assert.ThrowsException<Exception>(() => _container.CreateInstance<CustomerDAL2>());
         }
     }
 }

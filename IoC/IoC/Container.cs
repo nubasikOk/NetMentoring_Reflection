@@ -25,22 +25,26 @@ namespace IoC
             foreach (var type in types)
             {
                 var constructorImportAttribute = type.GetCustomAttribute<ImportConstructorAttribute>();
-                if (constructorImportAttribute.HasImportedAtributes() ||  type.HasImportedProperties())
+                if (constructorImportAttribute.HasAtributes() ||  type.HasImportedProperties())
                 {
-                    _typesDictionary.Add(type, type.);
+                    _typesDictionary.Add(type, type);
                 }
 
                 var exportAttributes = type.GetCustomAttributes<ExportAttribute>();
-                
                 foreach (var exportAttribute in exportAttributes)
                 {
-                    _typesDictionary.Add(exportAttribute.Contract ?? type, type);
+                    if (exportAttribute.Contract != null)
+                    {
+                        foreach (var contract in exportAttribute.Contract)
+                        {
+                            _typesDictionary.Add(contract, type);
+                        }
+                    }
+                    
                 }
             }
         }
 
-
-        
         private void ResolveProperties(Type type, object instance)
         {
             foreach (var property in type.GetImportedProperties())

@@ -2,7 +2,8 @@
 
 namespace IoC.Tests.Objects
 {
-    [Export]
+
+    [Export(typeof(Logger))]
     public class Logger
     {
     }
