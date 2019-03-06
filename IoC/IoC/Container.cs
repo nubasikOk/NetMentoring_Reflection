@@ -18,18 +18,20 @@ namespace IoC
             _typesDictionary = new Dictionary<Type, Type>();
         }
 
+        
         public void ReadAssembly(Assembly assembly)
         {
             var types = assembly.ExportedTypes;
             foreach (var type in types)
             {
                 var constructorImportAttribute = type.GetCustomAttribute<ImportConstructorAttribute>();
-                if (constructorImportAttribute != null || HasImportedProperties(type))
+                if (constructorImportAttribute.HasImportedAtributes() ||  type.HasImportedProperties())
                 {
-                    _typesDictionary.Add(type, type);
+                    _typesDictionary.Add(type, type.);
                 }
 
                 var exportAttributes = type.GetCustomAttributes<ExportAttribute>();
+                
                 foreach (var exportAttribute in exportAttributes)
                 {
                     _typesDictionary.Add(exportAttribute.Contract ?? type, type);
@@ -37,21 +39,11 @@ namespace IoC
             }
         }
 
-        private bool HasImportedProperties(Type type)
-        {
-            var propertiesInfo = GetImportedProperties(type);
-            return propertiesInfo.Any();
-        }
 
-        private IEnumerable<PropertyInfo> GetImportedProperties(Type type)
-        {
-            return type.GetProperties().Where(p => p.GetCustomAttribute<ImportAttribute>() != null);
-        }
-
+        
         private void ResolveProperties(Type type, object instance)
         {
-            var propertiesInfo = GetImportedProperties(type);
-            foreach (var property in propertiesInfo)
+            foreach (var property in type.GetImportedProperties())
             {
                 var resolvedProperty = ConstructInstanceOfType(property.PropertyType);
                 property.SetValue(instance, resolvedProperty);
@@ -69,12 +61,10 @@ namespace IoC
             ConstructorInfo constructorInfo = GetConstructor(dependendType);
             object instance = CreateFromConstructor(dependendType, constructorInfo);
 
-            if (dependendType.GetCustomAttribute<ImportConstructorAttribute>() != null)
+            if (dependendType.GetCustomAttribute<ImportConstructorAttribute>() == null)
             {
-                return instance;
-            }
-
-            ResolveProperties(dependendType, instance);
+                ResolveProperties(dependendType, instance);
+            }            
             return instance;
         }
 
@@ -92,10 +82,12 @@ namespace IoC
 
         private object CreateFromConstructor(Type type, ConstructorInfo constructorInfo)
         {
-            ParameterInfo[] parameters = constructorInfo.GetParameters();
+            var parameters = constructorInfo.GetParameters();
             List<object> parametersInstances = new List<object>(parameters.Length);
-            Array.ForEach(parameters, p => parametersInstances.Add(ConstructInstanceOfType(p.ParameterType)));
-
+            foreach(var parameter in parameters)
+            {
+                parametersInstances.Add(ConstructInstanceOfType(parameter.ParameterType));
+            }
             object instance = _activator.CreateInstance(type, parametersInstances.ToArray());
             return instance;
         }

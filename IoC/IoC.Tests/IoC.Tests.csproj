@@ -54,6 +54,7 @@
     <Compile Include="Objects\CustomerDAL.cs" />
     <Compile Include="Objects\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

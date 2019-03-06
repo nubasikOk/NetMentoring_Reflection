@@ -10,15 +10,17 @@ namespace IoC.Attributes
     public class ExportAttribute: Attribute
     {
         
-        public Type Contract { get; private set; }
-
+        public Type [] Contract { get; private set; }
+       
         public ExportAttribute()
         { }
 
-        public ExportAttribute(Type contract)
+        public ExportAttribute(params Type [] contract)
         {
             Contract = contract;
         }
+
+       
 
     }
 }
