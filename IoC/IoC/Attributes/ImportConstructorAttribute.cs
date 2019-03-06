@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IoC
+namespace IoC.Attributes
 {
-    public class Class1
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ImportConstructorAttribute : Attribute
     {
     }
 }
