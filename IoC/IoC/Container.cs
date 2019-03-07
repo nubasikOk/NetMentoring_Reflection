@@ -86,12 +86,8 @@ namespace IoC
 
         private object CreateFromConstructor(Type type, ConstructorInfo constructorInfo)
         {
-            var parameters = constructorInfo.GetParameters();
-            List<object> parametersInstances = new List<object>(parameters.Length);
-            foreach(var parameter in parameters)
-            {
-                parametersInstances.Add(ConstructInstanceOfType(parameter.ParameterType));
-            }
+            var parameters = constructorInfo.GetParameters();            
+            var parametersInstances = parameters.Select(p => ConstructInstanceOfType(p.ParameterType));
             object instance = _activator.CreateInstance(type, parametersInstances.ToArray());
             return instance;
         }

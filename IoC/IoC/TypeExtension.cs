@@ -20,11 +20,7 @@ namespace IoC
 
         public static bool HasAtributes(this ImportConstructorAttribute constructor)
         {
-            if (constructor == null)
-            {
-                return false;
-            }
-            return true;
+            return constructor != null;
         }
     }
 }

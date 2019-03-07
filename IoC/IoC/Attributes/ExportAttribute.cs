@@ -11,8 +11,7 @@ namespace IoC.Attributes
     {
         
         public Type [] Contract { get; private set; }
-
-       
+               
         public ExportAttribute()
         { }
 
